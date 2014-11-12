@@ -4,6 +4,7 @@ from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from yay.items import SiteItem
 from yay.models import Site
 from tldextract import extract
+import htmlmin
 import redis
 
 
@@ -36,11 +37,12 @@ class YaySpider(scrapy.Spider):
 
     def parse(self, response):
         hxs = scrapy.Selector(response)
+        content_minimized = htmlmin.minify(response.body.decode('utf-8'))
         item = SiteItem()
         item['fqdn'] = extract(response.url).registered_domain
         item['url'] = response.url
         item['title'] = hxs.xpath('//html/head/title/text()').extract()[0].strip() or item['fqdn']
-        item['content'] = hxs.xpath('//html/body/text()').extract()[0].strip()
+        item['content'] = content_minimized
 
         r = redis.Redis(connection_pool=self.pool)
         raw_links = self.link_extractor.extract_links(response)

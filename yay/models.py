@@ -21,3 +21,4 @@ class Site(BaseModel):
     title = CharField()
     url = CharField()
     content = TextField()
+    crawled_at = DateTimeField()
