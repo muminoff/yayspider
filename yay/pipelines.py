@@ -7,9 +7,10 @@
 from scrapy.conf import settings
 from datetime import datetime
 from peewee import *
+from yay.models import Site
+import htmlmin
 
 
-# psql_db = PostgresqlDatabase('yay', host='172.17.0.109', port=5432, user='sardor', password='sardor')
 psql_db = PostgresqlDatabase(
         settings["SITES_DB"],
         host=settings["DB_HOST"],
@@ -18,26 +19,15 @@ psql_db = PostgresqlDatabase(
         password=settings["DB_PASSWORD"]
         )
 
-class BaseModel(Model):
-    """ Base model for PostgreSQL database """
-    class Meta:
-        database = psql_db
-
-
-class Site(BaseModel):
-    fqdn = CharField()
-    title = CharField()
-    url = CharField()
-    content = TextField()
-
 
 class YayPipeline(object):
     def process_item(self, item, spider):
+        content_minimized = htmlmin.minify(item['content'].decode('utf-8'))
         Site.create(
                 fqdn=item['fqdn'],
                 title=item['title'],
                 url=item['url'],
-                content=item['content'],
+                content=content_minimized,
                 crawled_at=datetime.now()
                 )
         return item

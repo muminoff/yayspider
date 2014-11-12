@@ -2,16 +2,34 @@
 import scrapy
 from scrapy.contrib.linkextractors.sgml import SgmlLinkExtractor
 from yay.items import SiteItem
+from yay.models import Site
 from tldextract import extract
 import redis
 
 
-class YaySpider(scrapy.Spider):
+class YaySpider(scrapy.Spider): 
     name = "yayspider"
-    allowed_domains = ["xushnudbek.uz"]
-    start_urls = ('http://www.xushnudbek.uz/',)
+    allowed_domains = ["kun.uz"]
+    start_urls = ('http://kun.uz/',)
     link_extractor = SgmlLinkExtractor()
     pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+
+    def __init__(self, category=None, *args, **kwargs):
+        from scrapy.conf import settings
+        from peewee import PostgresqlDatabase
+        psql_db = PostgresqlDatabase(
+                settings["SITES_DB"],
+                host=settings["DB_HOST"],
+                port=settings["DB_PORT"],
+                user=settings["DB_USER"],
+                password=settings["DB_PASSWORD"]
+                )
+        try:
+            psql_db.create_tables([Site], safe=True)
+        except:
+            pass
+        super(YaySpider, self).__init__(*args, **kwargs)
+
 
     def is_domestic(self, raw_url):
         return extract(raw_url).tld == 'uz'
