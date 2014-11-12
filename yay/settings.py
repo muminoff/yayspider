@@ -8,7 +8,9 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
 
-BOT_NAME = 'yay'
+BOT_NAME = 'yaybot'
+BOT_VERSION = '0.0.1'
+COOKIES_ENABLED = False
 
 SPIDER_MODULES = ['yay.spiders']
 NEWSPIDER_MODULE = 'yay.spiders'
@@ -16,10 +18,13 @@ NEWSPIDER_MODULE = 'yay.spiders'
 ITEM_PIPELINES = (
         'yay.pipelines.YayPipeline',
         )
+CONCURRENT_REQUESTS=10
+CONCURRENT_REQUESTS_PER_DOMAIN=6
+DOWNLOAD_DELAY=0.5
+RANDOMIZE_DOWNLOAD_DELAY=True
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'yay (+http://www.yourdomain.com)'
-CONCURRENT_REQUESTS=128
 
 SITES_DB = "yay"
 DB_HOST = "172.17.0.109"
