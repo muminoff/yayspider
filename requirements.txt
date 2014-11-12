@@ -4,3 +4,5 @@ ipdb==0.8
 redis==2.10.3
 service-identity==14.0.0
 tldextract==1.5.1
+peewee==2.4.2
+psycopg2==2.5.4

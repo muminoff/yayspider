@@ -12,5 +12,5 @@ class SiteItem(scrapy.Item):
     fqdn = scrapy.Field()
     url = scrapy.Field()
     title = scrapy.Field()
-    body = scrapy.Field()
+    content = scrapy.Field()
     # links = scrapy.Field()
