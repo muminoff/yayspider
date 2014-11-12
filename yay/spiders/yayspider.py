@@ -39,8 +39,8 @@ class YaySpider(scrapy.Spider):
         item = SiteItem()
         item['fqdn'] = extract(response.url).registered_domain
         item['url'] = response.url
-        item['title'] = hxs.xpath('//html/head/title/text()').extract()[0]
-        item['content'] = response.body
+        item['title'] = hxs.xpath('//html/head/title/text()').extract()[0].strip() or item['fqdn']
+        item['content'] = hxs.xpath('//html/body/text()').extract()[0].strip()
 
         r = redis.Redis(connection_pool=self.pool)
         raw_links = self.link_extractor.extract_links(response)
