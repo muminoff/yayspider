@@ -1,0 +1,6 @@
+Scrapy==0.24.4
+Twisted==14.0.2
+ipdb==0.8
+redis==2.10.3
+service-identity==14.0.0
+tldextract==1.5.1
