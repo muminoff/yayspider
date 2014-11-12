@@ -13,17 +13,21 @@ class YaySpider(scrapy.Spider):
     allowed_domains = ["kun.uz"]
     start_urls = ('http://kun.uz/',)
     link_extractor = SgmlLinkExtractor()
-    pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+    pool = redis.ConnectionPool(
+        host=settings["REDIS_HOST"],
+        port=settings["REDIS_PORT"],
+        db=settings["REDIS_DB"]
+    )
 
     def __init__(self, category=None, *args, **kwargs):
         from scrapy.conf import settings
         from peewee import PostgresqlDatabase
         psql_db = PostgresqlDatabase(
-                settings["SITES_DB"],
-                host=settings["DB_HOST"],
-                port=settings["DB_PORT"],
-                user=settings["DB_USER"],
-                password=settings["DB_PASSWORD"]
+                settings["POSTGRESQL_DB"],
+                host=settings["POSTGRESQL_HOST"],
+                port=settings["POSTGRESQL_PORT"],
+                user=settings["POSTGRESQL_USER"],
+                password=settings["POSTGRESQL_PASS"]
                 )
         try:
             psql_db.create_tables([Site], safe=True)

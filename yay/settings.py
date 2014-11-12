@@ -26,8 +26,12 @@ RANDOMIZE_DOWNLOAD_DELAY=True
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'yay (+http://www.yourdomain.com)'
 
-SITES_DB = "yay"
-DB_HOST = "172.17.0.109"
-DB_PORT = 5432
-DB_USER = "sardor"
-DB_PASSWORD = "sardor"
+POSTGRESQL_DB = "yay"
+POSTGRESQL_HOST = "172.17.0.109"
+POSTGRESQL_PORT = 5432
+POSTGRESQL_USER = "sardor"
+POSTGRESQL_PASS = "sardor"
+
+REDIS_DB = 0
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
